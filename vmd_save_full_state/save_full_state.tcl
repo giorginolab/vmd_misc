@@ -1,7 +1,10 @@
 # Save FULL visualization state, including trajectories Can be
 # reloaded as usual. Most of this proc is copied from save_state
-# builtin function.
-#
+# function built-in VMD, which is distributed under the terms of the
+# UIUC Open Source License:
+# http://www.ks.uiuc.edu/Research/vmd/current/LICENSE.html
+
+
 # Trajectory data is saved in pdb and dcd format in a subdir
 # <chosen_file_name>.t/molXX.YY
 
@@ -12,7 +15,7 @@
 #  - preserve inferred topologies (parse filespec?)
 #  - handle relative paths when loading states [DONE]
 
-# Toni Giorgino <toni.giorgino isib.cnr.it>
+# Modifications by Toni Giorgino <toni.giorgino isib.cnr.it>
 
 proc save_full_state {{file EMPTYFILE}} {
   global representations
