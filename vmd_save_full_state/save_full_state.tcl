@@ -75,25 +75,25 @@ proc save_full_state {{file EMPTYFILE}} {
       set mname [format "mol%04d" $mol]
 
       # in lack of a native format
-      animate write psf $fildir/$mname.psf
-      animate write pdb $fildir/$mname.pdb beg 0 end 0
-      animate write dcd $fildir/$mname.dcd
+      animate write psf $fildir/$mname.psf waitfor all $mol
+      animate write pdb $fildir/$mname.pdb beg 0 end 0 waitfor all $mol
+      animate write dcd $fildir/$mname.dcd waitfor all $mol
 
       # Try relative first, then absolute if it fails
       puts $fildes "if \[catch {
-                                mol new $fildir/$mname.pdb;
+                                mol new $fildir/$mname.pdb waitfor all
                                 animate delete all;
-                                mol addfile $fildir/$mname.psf;
+                                mol addfile $fildir/$mname.psf waitfor all
                                 mol addfile $fildir/$mname.dcd waitfor all
                     } e \] {
                                 puts \"Couldn't open original pathnames; trying $fildir_abs\";
-                                mol new $fildir_abs/$mname.pdb;
+                                mol new $fildir_abs/$mname.pdb waitfor all
                                 animate delete all;
-                                mol addfile $fildir_abs/$mname.psf;
+                                mol addfile $fildir_abs/$mname.psf waitfor all
                                 mol addfile $fildir_abs/$mname.dcd waitfor all
                            } "
       
-    # We load PDB for chain info, PSF for resid, topology, masses etc,
+    # We load PDB for chain info, beta/okkupa, PSF for resid, topology, masses etc,
     # and DCD for coordinates. DCD could be replaced by a multi-frame
     # PDB, with the exception of (a) impossibility to save large
     # coordinates and (b) occupies more disk space.
@@ -154,7 +154,7 @@ proc save_full_state {{file EMPTYFILE}} {
     if {$mol == [molinfo top]} {
       puts $fildes "set topmol \[molinfo top\]"
     }
-    puts $fildes "\# done with molecule $mol"
+    puts $fildes "\# done with molecule $mol ----------------------------------"
   } 
   puts $fildes "foreach v \$viewplist \{"
   puts $fildes "  molinfo \$v set {center_matrix rotate_matrix scale_matrix global_matrix} \$viewpoints(\$v)"
