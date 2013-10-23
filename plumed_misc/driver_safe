@@ -1,0 +1,78 @@
+#!/bin/bash
+
+# Workaround the un-acceptance of full paths and the absence of a "colvar" option
+
+function usage {
+    cat <<EOF
+Wrapper for making PLUMED's driver accept pathnames on input and output.
+
+Usage:
+   driver_safe -dcd [trajectory.dcd] -pdb [structure.pdb] -plumed [analysis.plumed.exp]
+               -colvar [out.cv] [-strip] [more options passed to driver]
+                             
+EOF
+}
+
+o=$PWD
+strip=0
+
+# must parse -dcd -pdb -plumed -colvar
+until [ -z "$1" ]; do
+    case "$1" in
+        -h*)
+    	    usage
+    	    exit 0;;
+	-dcd) 
+	    dcd=`readlink -f $2`
+	    shift;;
+	-strip)
+	    strip=1;;
+	-pdb)
+	    pdb=`readlink -f $2`
+	    shift;;
+	-plumed)
+	    plumed=`readlink -f $2`
+	    shift;;
+	-colvar)
+	    out=`readlink -f $2`
+	    shift;;
+	*)
+	    rest="$rest $1"
+    esac
+    shift
+done
+
+if [ "$plumed" = "" ]; then
+    usage 
+    exit 0
+fi
+
+
+td=/tmp/driver_safe.$USER.$$
+mkdir $td
+cd $td
+
+ln -s $dcd file.dcd
+ln -s $pdb file.pdb
+ln -s $plumed file.plumed
+
+echo "driver -dcd file.dcd -pdb file.pdb -plumed file.plumed $rest"  > cmdline
+      driver -dcd file.dcd -pdb file.pdb -plumed file.plumed $rest > stdout 2> stderr
+     
+
+if [ -r COLVAR ]; then
+    if [ $strip -eq 1 ]; then
+    	awk '!/^#/ {$1=""; $NF=""; $(NF-1)=""; $(NF-2)="";print;}' COLVAR > $out
+    else
+	mv COLVAR $out 
+    fi	   
+    cd $o
+    rm -rf $td
+else
+    cat stdout stderr
+    echo "Something went wrong. Check stdout and stderr files in $td ."
+    exit 1
+fi
+
+
+

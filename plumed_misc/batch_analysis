@@ -1,0 +1,55 @@
+#!/bin/bash
+
+driver_safe=driver_safe
+
+function usage {
+    cat <<EOF
+Wrapper for PLUMED's batch analysis.  Pattern must be quoted. Uses 6 processes.
+
+Usage:
+   $0 -pattern ['*.dcd'] -pdb [structure.pdb] -plumed [analysis.plumed.exp]
+               -suffix [cv] [more options passed to driver]
+EOF
+}
+
+o=$PWD
+
+# TODO 
+# * pattern should stop at the next hyphen, not requiring quotes
+# * add -keep option (iterate and rebuild list)
+
+until [ -z "$1" ]; do
+    case "$1" in
+        -h*)
+    	    usage
+    	    exit 0;;
+	-pattern) 
+	    pattern="$2"
+	    shift;;
+	-pdb)
+	    pdb="$2"
+	    shift;;
+	-plumed)
+	    plumed="$2"
+	    shift;;
+	-suffix)
+	    suffix="$2"
+	    shift;;
+	*)
+	    rest="$rest $1"
+    esac
+    shift
+done
+
+if [ "$plumed" = "" ]; then
+    usage 
+    exit 0
+fi
+
+echo "Files are created in same directory as the dcds"
+
+ls $pattern| xargs -t -I+ -P6 $driver_safe -dcd + -pdb $pdb -plumed $plumed  -colvar +.$suffix $rest 
+ls --sort=v $pattern.$suffix | xargs awk '!/FIELDS/{print FILENAME $0}'  > $suffix.all
+
+echo "Created $suffix.all"
+
