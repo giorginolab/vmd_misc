@@ -49,11 +49,10 @@ ech "3. Combining parameters"
 # 108b83d5b5e33e13bd9ecd0592c45c60  par_all22star_prot_revision-one.inp
 
 ech "4. Getting Charmm22* revision one from home.uchicago.edu/~/kippjohnson"
-rm par_all22star_prot_revision-one.inp
-wget http://home.uchicago.edu/~/kippjohnson/par_all22star_prot_revision-one.inp
+wget -N http://home.uchicago.edu/~/kippjohnson/par_all22star_prot_revision-one.inp
 
 ech "5. Merging parameters"
-../combine_parameters.pl -f par_all22star_prot.inp \
+../combine_parameters.pl -f par_all22star_prot_revision-one.inp \
 	toppar/par_all36_cgenff.prm \
 	toppar/par_all36_lipid.prm \
 	toppar/par_all36_na.prm \
