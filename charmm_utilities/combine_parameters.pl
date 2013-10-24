@@ -86,7 +86,7 @@ while(my $l=<>) {
 		$start=0;
 	}
 	
-	if($l=~/^cutnb/i && $cutnb_fix) {
+	if($l=~/^ *cutnb/i && $cutnb_fix) {
 	    $cutnb_fix_flag++;
 	    if ($cutnb_fix_flag>1) {
 		print STDERR "Removing cutnb line no. $cutnb_fix_flag: $l";
