@@ -24,7 +24,7 @@ Combine parameters
 
 This hack combines various sections of several CHARMM-style parameter files. The most common use case is to merge a parameter file extracted from a ParamChem-generated stream into a pre-merged "catch-all" parameter file.
 
-The _all-parameters_ directory provides two such files, analogous of those found in VMD, created from **(a)** the official CHARMM36 forcefield distribution _toppar_c36_aug12.tgz_ (available at http://mackerell.umaryland.edu/CHARMM_ff_params.html) and **(b)**  Aaron Oakley's CHARMM version of Charmm22* parameter set (available [here](http://home.uchicago.edu/~/kippjohnson/par_all22star_prot_revision-one.inp) ) .
+The _all-parameters_ directory provides two such files, analogous of those found in VMD, created from **(a)** the official CHARMM36 forcefield distribution *toppar_c36_aug12.tgz* (available at [MacKerrel's website]( http://mackerell.umaryland.edu/CHARMM_ff_params.html) and **(b)**  Aaron Oakley's CHARMM version of Charmm22* parameter set (available [here](http://home.uchicago.edu/~/kippjohnson/par_all22star_prot_revision-one.inp) ) .
 
 Example usage:
 
