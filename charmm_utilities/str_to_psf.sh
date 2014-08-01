@@ -29,7 +29,7 @@ echo "Detected residue name $res"
 
 
 echo "Splitting stream"
-perl -w $split_stream $bn.str
+perl -w $split_stream_pl $bn.str
 
 
 echo "Generating PSF"
