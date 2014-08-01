@@ -6,6 +6,17 @@ These scripts are *UNSUPPORTED* and *UNOFFICIAL*. They may or may not work for y
 They are mostly useful for people using the results of the excellent [ParamChem](https://www.paramchem.org/) service for parametrizing ligands (and the corresponding CGenFF forcefield) in third-party MD software.
 
 
+Stream to PSF
+-------------
+
+A script to hack together _ligand.str_ into the corresponding PDB and PSF files. Requries _psfgen_ from NAMD CVS (should be in the executable path), _split_stream_ (below, set path in script), _openbabel_ (should be in the executable path). 
+
+Example usage:
+
+    str_to_psf.sh fragment_2.str
+
+
+
 Split stream
 ------------
 
